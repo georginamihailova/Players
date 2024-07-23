@@ -26,12 +26,16 @@ public class DataInitializer {
     }
     @PostConstruct
     public void initData() {
-        for (int i = 1; i < 6; i++) {
-            this.teamService.create("Team: " + i);
+        if (teamService.listAll().isEmpty()) {
+            for (int i = 1; i < 6; i++) {
+                this.teamService.create("Team: " + i);
+            }
         }
 
-        for (int i = 1; i < 11; i++) {
-            this.playerService.create("Player: " + i, "Bio: " + i , 20.9 * i, this.randomizePosition(i), this.teamService.listAll().get((i-1)%5).getId());
+        if (playerService.listAllPlayers().isEmpty()) {
+            for (int i = 1; i < 11; i++) {
+                this.playerService.create("Player: " + i, "Bio: " + i , 20.9 * i, this.randomizePosition(i), this.teamService.listAll().get((i-1)%5).getId());
+            }
         }
     }
 }

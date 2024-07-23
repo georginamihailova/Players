@@ -1,23 +1,29 @@
-version: "3"
-services:
-  #  Create a service named db.
-  wp-db:
-    #   Use the Docker Image postgres. This will pull the newest release.
-    image: "postgres"
-    #   Give the container the name my_postgres. You can changes to something else.
-    container_name: "wp2020_players"
-    #   Setup the username, password, and database name. You can changes these values.
-    environment:
-      - POSTGRES_USER=wp
-      - POSTGRES_PASSWORD=wp123
-      - POSTGRES_DB=players
-    #   Maps port 5432 (localhost) to port 5432 on the container. You can change the ports to fix your needs.
-    ports:
-      - "5431:5432"
-    #   Set a volume some that database is not lost after shutting down the container.
-    #   I used the name postgres-data but you can changed it to something else.
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-volumes:
-  postgres-data:
+version: '3.8'
 
+services:
+  wp-db:
+    image: postgres:15
+    container_name: players_db
+    environment:
+      POSTGRES_USER: wp
+      POSTGRES_PASSWORD: wp123
+      POSTGRES_DB: wp
+    ports:
+      - "5431:5432"  # Maps host port 5431 to container port 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    image: demo:latest  # Use your latest app image name
+    container_name: players_app
+    depends_on:
+      - wp-db
+    ports:
+      - "8080:8080"  # Ensure this line is present to map host port 8080 to container port 8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://wp-db:5432/wp
+      SPRING_DATASOURCE_USERNAME: wp
+      SPRING_DATASOURCE_PASSWORD: wp123
+
+volumes:
+  pgdata:
