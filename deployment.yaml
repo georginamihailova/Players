@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-namespace
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: my-namespace
+data:
+  APP_ENV: production
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+  namespace: my-namespace
+type: Opaque
+data:
+  datasource-username: d3A= #base64 encoded wp
+  datasource-password: d3AxMjM= #base64 encoded wp123
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: players-app
+  namespace: my-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: players
+  template:
+    metadata:
+      labels:
+        app: players
+    spec:
+      containers:
+        - name: players
+          image: genainne/players:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: datasource-url
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: datasource-username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: datasource-password
