@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: wp123
       POSTGRES_DB: wp
     ports:
-      - "5431:5432"  # Maps host port 5431 to container port 5432
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
