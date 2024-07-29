@@ -53,8 +53,10 @@
 - Потребно е да конфигурирате најава и одјава на корисници со Spring Security во класата `SecurityConfig`.
   Во самата класа има опис што треба да биде имплементирано.
 
-#kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
-#kubectl apply -f .\namespace.yaml 
-#kubectl config set-context --current --namespace=namespace-players
+## kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+## kubectl apply -f .\namespace.yaml 
+
+## kubectl config set-context --current --namespace=namespace-players
 
 
