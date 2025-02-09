@@ -1,4 +1,4 @@
-# Use the official Maven image to build the application
+# Using the official Maven image to build the application
 FROM maven AS build
 WORKDIR /app
 
@@ -8,7 +8,7 @@ COPY . .
 # Package the application
 RUN mvn clean package -DskipTests
 
-# Use the official OpenJDK image for the runtime
+# Using fficial OpenJDK image for the runtime
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 
